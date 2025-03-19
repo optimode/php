@@ -28,7 +28,7 @@ You can find the specific installation link in the documentation for the specifi
 
 ## Composer
 [Composer](https://getcomposer.org) is installed globally in all images. 
-Both version 1 and 2 are installed, available through `composer1` and `composer2` commands respectively (`composer` in now a symlink to `composer2`).
+Both version 1 and 2 are installed, available through `composer1` and `composer` commands respectively.
 
 ## License
 
