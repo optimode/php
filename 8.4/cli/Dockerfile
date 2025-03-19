@@ -60,8 +60,6 @@ COPY ./data/docker-entrypoint.d /docker-entrypoint.d
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions @composer @composer-1
-
 RUN install-php-extensions \
     amqp \
     apcu \
@@ -122,6 +120,17 @@ RUN install-php-extensions \
     yaml \
     zip \
     zstd
+
+# Download installer and check for its integrity.
+RUN cd /usr/local/bin \
+    && curl -sSL https://getcomposer.org/installer > composer-setup.php \
+    && curl -sSL https://composer.github.io/installer.sha384sum > composer-setup.sha384sum \
+    && sha384sum --check composer-setup.sha384sum \
+    # Install Composer 2.
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --2 \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer1 --1 \
+    # Remove installer files.
+    && rm /usr/local/bin/composer-setup.php /usr/local/bin/composer-setup.sha384sum
 
 RUN rm -rf /var/lib/apt/lists/*
 

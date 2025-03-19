@@ -1,5 +1,30 @@
 # PHP 8.4 information
 
+## Installation
+```bash
+docker pull ghcr.io/optimode/php:8.4-cli
+docker pull ghcr.io/optimode/php:8.4-fpm
+docker pull ghcr.io/optimode/php:8.4-apache
+```
+
+## Docker compose
+```yaml
+services:
+  php84:
+    image: ghcr.io/optimode/php:8.4-fpm
+    container_name: php84
+    hostname: php84
+    restart: no
+    #user: 1000:1000
+    stdin_open: true
+    tty: true
+```
+
+## Docker run
+```bash
+docker run -d --rm --name php84 ghcr.io/optimode/php:8.4-fpm
+```
+
 ## Available tags
 - 8.4-cli
 - 8.4-fpm

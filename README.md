@@ -1,5 +1,7 @@
 # PHP Docker Images
-## It is currently still a very rudimentary project.
+## It is currently still a very rudimentary project, barely tested. 
+
+## !!! Use at your own risk !!!
 
 Docker images built on top of the [official PHP images](https://hub.docker.com/r/_/php/) with the addition of some common and useful extensions, installed with [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer). 
 
@@ -9,6 +11,20 @@ All available modules are installed in the cli, and fpm and apache add their own
 ## Available versions
 
 - 8.4 [Documentation](8.4/README.md)
+
+## Installation
+Install from the command line:
+
+```bash
+$ docker pull ghcr.io/optimode/php:TAG
+```
+
+Tags can be: VERSION-PHP_SAPI
+where VERSION is the php mversion number and PHP_SAPI  is the php mode. SAPHP_SAPU values can be: CLI, FPM, APACHE
+for example: 8.4-cli, 8.4-fpm, 8.4-apache
+
+You can find the specific installation link in the documentation for the specific version.
+
 
 ## Composer
 [Composer](https://getcomposer.org) is installed globally in all images. 
