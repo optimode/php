@@ -10,7 +10,7 @@ All available modules are installed in the cli, and fpm and apache add their own
 
 ## Available versions
 
-- 8.4 [Documentation](8.4/README.md)
+- 8.4 [documentation](8.4/README.md)
 
 ## Installation
 Install from the command line:
@@ -20,10 +20,11 @@ $ docker pull ghcr.io/optimode/php:TAG
 ```
 
 Tags can be: VERSION-PHP_SAPI
-where VERSION is the php mversion number and PHP_SAPI  is the php mode. SAPHP_SAPU values can be: CLI, FPM, APACHE
-for example: 8.4-cli, 8.4-fpm, 8.4-apache
+where VERSION is the php version number and PHP_SAPI is the php mode. PHP_SAPI values can be: CLI, FPM, APACHE
 
-You can find the specific installation link in the documentation for the specific version.
+Example: 8.4-cli, 8.4-fpm, 8.4-apache
+
+You can find the specific installation image name in the documentation for the specific version.
 
 
 ## Composer
@@ -31,5 +32,4 @@ You can find the specific installation link in the documentation for the specifi
 Both version 1 and 2 are installed, available through `composer1` and `composer` commands respectively.
 
 ## License
-
 Docker PHP Images is released under the [MIT]
