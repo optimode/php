@@ -1,23 +1,5 @@
 FROM optimode/php:8.4-cli
 
-###
-### Labels
-###
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
-#LABEL "org.opencontainers.image.created"=""
-#LABEL "org.opencontainers.image.version"=""
-#LABEL "org.opencontainers.image.revision"=""
-LABEL "maintainer"="Laszlo Malina <laszlo@malina.hu>"
-LABEL "org.opencontainers.image.authors"="Laszlo Malina <laszlo@malina.hu>"
-LABEL "org.opencontainers.image.url"="https://github.com/optimode/docker-php"
-LABEL "org.opencontainers.image.documentation"="https://github.com/optimode/docker-php"
-LABEL "org.opencontainers.image.source"="https://github.com/optimode/docker-php"
-LABEL "org.opencontainers.image.vendor"="optimode"
-LABEL "org.opencontainers.image.licenses"="MIT"
-LABEL "org.opencontainers.image.ref.name"="8.4-apache"
-LABEL "org.opencontainers.image.title"="PHP-APACHE 8.4"
-LABEL "org.opencontainers.image.description"="PHP-APACHE 8.4"
-
 ENV APACHE_CONFDIR /etc/apache2
 ENV APACHE_ENVVARS $APACHE_CONFDIR/envvars
 
@@ -63,11 +45,25 @@ RUN set -eux; \
         chown -R --no-dereference "$APACHE_RUN_USER:$APACHE_RUN_GROUP" "$APACHE_LOG_DIR"
 
 COPY ./data/apache2-foreground /usr/local/bin/
-COPY --from=php:8.4.5-apache /usr/lib/apache2/modules/libphp.so /usr/lib/apache2/modules/libphp.so 
-COPY --from=php:8.4.5-apache /etc/apache2 /etc/apache2
+COPY --from=php:8.4-apache /usr/lib/apache2/modules/libphp.so /usr/lib/apache2/modules/libphp.so 
+COPY --from=php:8.4-apache /etc/apache2 /etc/apache2
 
 # Apache + PHP requires preforking Apache for best results
 RUN a2dismod mpm_event && a2enmod mpm_prefork
+
+# https://github.com/opencontainers/image-spec/blob/master/annotations.md
+LABEL "org.opencontainers.image.title"="PHP 8.4 APACHE"
+LABEL "org.opencontainers.image.description"="PHP 8.4 APACHE with many extensions"
+LABEL "org.opencontainers.image.url"="$URL"
+LABEL "org.opencontainers.image.source"="$SOURCE"
+LABEL "org.opencontainers.image.version"="8.4"
+LABEL "org.opencontainers.image.revision"="$REVISION"
+LABEL "org.opencontainers.image.licenses"="MIT"
+LABEL "org.opencontainers.image.created"="$BUILD_DATE"
+LABEL "org.opencontainers.image.authors"="$AUTHORS"
+LABEL "org.opencontainers.image.vendor"="$VENDOR"
+LABEL "org.opencontainers.image.base.name"="optimode/php:8.4-cli"
+LABEL "org.opencontainers.image.ref.name"="8.4-apache"
 
 WORKDIR /var/www/html
 # https://httpd.apache.org/docs/2.4/stopping.html#gracefulstop

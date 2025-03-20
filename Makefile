@@ -1,3 +1,4 @@
+.ONESHELL:
 ifneq (,)
 .error This Makefile requires GNU Make.
 endif
@@ -6,21 +7,38 @@ ifndef VERBOSE
 MAKEFLAGS += --no-print-directory
 endif
 
+# -------------------------------------------------------------------------------------------------
+# Make required Variables
+# -------------------------------------------------------------------------------------------------
+VERSION =
+
+# -------------------------------------------------------------------------------------------------
+# Make optional Variables
+# -------------------------------------------------------------------------------------------------
+ENABLE_CACHE ?= 1
+USE_BUILDKIT ?= 1
 
 # -------------------------------------------------------------------------------------------------
 # Docker required Variables
 # -------------------------------------------------------------------------------------------------
-IMAGE   =
+DIR        = .
+FILE       = Dockerfile
+ARCH	   = linux/amd64
 
 # -------------------------------------------------------------------------------------------------
 # Docker optional Variables
 # -------------------------------------------------------------------------------------------------
-NO_CACHE   =
-ARGS       =
-DOCKER_TAG = latest
-DIR        = .
-FILE       = Dockerfile
-
+CACHE_FLAGS   =
+BUILDKIT_FLAGS =
+ARGS    =
+AUTHORS	= Laszlo Malina <laszlo@malina.hu>
+VENDOR	= optimode
+URL		= https://github.com/optimode/php
+REVISION=$(shell git rev-parse --short HEAD)
+BUILD_DATE=$(shell date --rfc-3339=s)
+DATE=$(shell date +'%Y%m%d%H%M%S')
+IMAGE = $(VENDOR)/php
+VERSIONS=8.4-cli 8.4-fpm 8.4-apache
 
 # Auto-detect current platform and use it as default to build for
 _PLATFORM = $(shell uname -m)
@@ -32,74 +50,84 @@ else
 	endif
 endif
 
+
+ifeq ($(ENABLE_CACHE),0)
+    CACHE_FLAGS+=--no-cache
+endif
+
+BUILDKIT_FLAGS=
+ifeq ($(USE_BUILDKIT),1)
+    BUILDKIT_FLAGS+=--progress=plain
+endif
+
 # -------------------------------------------------------------------------------------------------
 # Targets
 # -------------------------------------------------------------------------------------------------
-.PHONY: docker-help
-docker-help:
-	@echo "make build-8.4              # Build all PHP 8.4 Docker images"
-	@echo "make build-8.4-cli          # Build PHP 8.4 CLI Docker image"
-	@echo "make build-8.4-fpm          # Build PHP 8.4 FPM Docker image"
-	@echo "make build-8.4-apache       # Build PHP 8.4 Apache Docker image"
-	@echo ""
-	@echo "make docker-arch-build      # Build Docker image"
-	@echo "    IMAGE=                  # (req) Set Docker image name"
-	@echo "    DOCKER_TAG=             # (req) Set Docker image tag"
-	@echo "    ARCH=                   # (opt) Specify Docker platform to build against"
-	@echo "    DIR=                    # (opt) Specify directory of Docker file"
-	@echo "    FILE=                   # (opt) Specify filename of Docker file"
-	@echo "    ARGS=                   # (opt) Add additional docker build arguments"
+.PHONY: build
+build: ## Build for a specific version. (Usage: make build VERSION=8.4-cli)
 
-
-.PHONY: build-8.4
-build-8.4:
-	$(MAKE) build-8.4-cli
-	$(MAKE) build-8.4-fpm
-	$(MAKE) build-8.4-apache
-
-.PHONY: build-8.4-cli
-build-8.4-cli:
-	$(MAKE) docker-arch-build DIR=./8.4/cli IMAGE=optimode/php DOCKER_TAG=8.4-cli ARCH=linux/amd64
-
-.PHONY: build-8.4-fpm
-build-8.4-fpm:
-	$(MAKE) docker-arch-build DIR=./8.4/fpm IMAGE=optimode/php DOCKER_TAG=8.4-fpm ARCH=linux/amd64
-
-.PHONY: build-8.4-apache
-build-8.4-apache:
-	$(MAKE) docker-arch-build DIR=./8.4/apache IMAGE=optimode/php DOCKER_TAG=8.4-apache ARCH=linux/amd64
-
-# -------------------------------------------------------------------------------------------------
-# Docker Architecture targets
-# -------------------------------------------------------------------------------------------------
-.PHONY: docker-arch-build
-docker-arch-build:
-	@if [ "$(DOCKER_TAG)" = "" ]; then \
-		echo "This make target requires the DOCKER_TAG variable to be set."; \
-		echo "make docker-arch-build DOCKER_TAG="; \
+	@if [ "$(VERSION)" = "" ]; then \
+		echo "This make target requires the PHP_VERSION variable to be set."; \
+		echo "make build VERSION="; \
 		echo "Exiting."; \
 		false; \
 	fi
-	@if [ "$(IMAGE)" = "" ]; then \
-		echo "This make target requires the IMAGE variable to be set."; \
-		echo "make docker-arch-build IMAGE="; \
-		echo "Exiting."; \
-		false; \
-	fi
+
+	PHP_VERSION=$(shell echo $(VERSION) | cut -d '-' -f1)
+	SAPI=$(shell echo $(VERSION) | cut -d '-' -f2)
+	TAG=$$PHP_VERSION-$$SAPI
+	DIR=$$PHP_VERSION/$$SAPI
+
 	@echo "################################################################################"
-	@echo "# Building $(IMAGE):$(DOCKER_TAG) (platform: $(ARCH))"
+	@echo "# Building $(IMAGE):$$TAG (platform: $(ARCH))"
 	@echo "################################################################################"
-	docker build \
-		$(NO_CACHE) \
+	DOCKER_BUILDKIT=$(USE_BUILDKIT) docker build \
+		$(CACHE_FLAGS) \
+		$(BUILDKIT_FLAGS) \
 		$(ARGS) \
-		$$( if [ -n "$(DOCKER_TARGET)" ]; then echo "--target $(DOCKER_TARGET)"; fi; ) \
 		--network host \
 		--platform $(ARCH) \
-		--label "org.opencontainers.image.created"="$$(date --rfc-3339=s)" \
-		--tag $(IMAGE):$(DOCKER_TAG) \
-		--file $(DIR)/$(FILE) $(DIR)
+		--build-arg "AUTHORS=$(AUTHORS)" \
+		--build-arg "VENDOR=$(VENDOR)" \
+		--build-arg "URL=$(URL)" \
+		--build-arg "REVISION=$(REVISION)" \
+		--build-arg "BUILD_DATE=$(BUILD_DATE)" \
+		--tag $(IMAGE):$$TAG \
+		--tag $(IMAGE):$$TAG-$(DATE) \
+		--tag $(IMAGE):$$TAG-$(REVISION) \
+		--file $$DIR/$(FILE) $$DIR
+
+$(foreach ver,$(VERSIONS),$(eval build-$(ver):; make build VERSION=$(ver) ## Build $(ver)))
+#$(foreach ver,$(VERSIONS),$(eval push-$(ver):; make push VERSION=$(ver) ## Push $(ver)))
+# $(foreach ver,$(VERSIONS),$(eval release-$(ver):; make build-$(ver) && make push-$(ver) ## Build and push $(ver)))
 
 
-.PHONY: docker-arch-rebuild
-docker-arch-rebuild: NO_CACHE=--no-cache
-docker-arch-rebuild: docker-arch-build
+.PHONY: push
+push:  ## Push the given version to the container registry
+	docker push $(IMAGE_NAME)
+
+.PHONY: help
+help:  ## List all available make targets
+	@echo ""
+	@echo "Usage: make [target]"
+	@echo ""
+	@echo "Targets:"
+	@$(foreach ver, $(VERSIONS), printf "  \033[36m%-20s\033[0m %s\n" "build-$(ver)" "Build $(ver)";)
+#	@$(foreach ver, $(VERSIONS), printf "  \033[36m%-20s\033[0m %s\n" "push-$(ver)" "Push $(ver)";)
+#	@$(foreach ver, $(VERSIONS), printf "  \033[36m%-20s\033[0m %s\n" "release-$(ver)" "Build and push $(ver)";)
+	@echo ""
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Required environment variables:"
+	@echo ""
+	@echo "  VERSION               PHP version to build (e.g. 8.4-cli, 8.4-fpm, 8.4-apache)"
+	@echo ""
+	@echo " Optional environment variables:"
+	@echo ""
+	@echo "  ENABLE_CACHE=0        Disable cache during build (default: 1)"
+	@echo "  USE_BUILDKIT=0        Disable buildkit during build (default: 1)"
+	
+	@echo ""
+	@echo "Examples:"
+	@echo "  make build VERSION=8.4-cli"
+	@echo "  make build VERSION=8.4-cli ENABLE_CACHE=0 USE_BUILDKIT=0"
