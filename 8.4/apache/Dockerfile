@@ -7,8 +7,6 @@ RUN set -eux; \
         apt-get update; \
         apt-get install -y --no-install-recommends apache2; \
         rm -rf /var/lib/apt/lists/*; \
-        \
-
 # generically convert lines like
 #   export APACHE_RUN_USER=www-data
 # into
