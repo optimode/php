@@ -1,11 +1,11 @@
-FROM php:8.4-cli
+FROM php:8.3-cli
 
 ### Envs
 ENV MY_USER="optimode" \
     MY_GROUP="optimode" \
     MY_UID="1000" \
     MY_GID="1000" \
-    PHP_VERSION="8.4"
+    PHP_VERSION="8.3"
 
 # Install dependencies
 RUN set -eux \
@@ -123,18 +123,18 @@ ARG VENDOR
 ARG REVISION
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
-LABEL "org.opencontainers.image.title"="PHP 8.4 CLI"
-LABEL "org.opencontainers.image.description"="PHP 8.4 CLI with many extensions"
+LABEL "org.opencontainers.image.title"="PHP 8.3 CLI"
+LABEL "org.opencontainers.image.description"="PHP 8.3 CLI with many extensions"
 LABEL "org.opencontainers.image.url"="$URL"
 LABEL "org.opencontainers.image.source"="$SOURCE"
-LABEL "org.opencontainers.image.version"="8.4"
+LABEL "org.opencontainers.image.version"="8.3"
 LABEL "org.opencontainers.image.revision"="$REVISION"
 LABEL "org.opencontainers.image.licenses"="MIT"
 LABEL "org.opencontainers.image.created"="$BUILD_DATE"
 LABEL "org.opencontainers.image.authors"="$AUTHORS"
 LABEL "org.opencontainers.image.vendor"="$VENDOR"
-LABEL "org.opencontainers.image.base.name"="php:8.4-cli"
-LABEL "org.opencontainers.image.ref.name"="8.4-cli"
+LABEL "org.opencontainers.image.base.name"="php:8.3-cli"
+LABEL "org.opencontainers.image.ref.name"="8.3-cli"
 
 EXPOSE 22
 WORKDIR /var/www/html

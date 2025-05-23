@@ -38,7 +38,7 @@ REVISION=$(shell git rev-parse --short HEAD)
 BUILD_DATE=$(shell date --rfc-3339=s)
 DATE=$(shell date +'%Y%m%d%H%M%S')
 IMAGE = $(VENDOR)/php
-VERSIONS=8.4-cli 8.4-fpm 8.4-apache
+VERSIONS=8.4-cli 8.4-fpm 8.4-apache 8.3-cli 8.3-fpm 8.3-apache 8.3-cli 8.2-fpm 8.2-apache 8.1-cli 8.1-fpm 8.1-apache
 
 # Auto-detect current platform and use it as default to build for
 _PLATFORM = $(shell uname -m)

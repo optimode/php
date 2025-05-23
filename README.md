@@ -11,6 +11,9 @@ All available modules are installed in the cli, and fpm and apache add their own
 ## Available versions
 
 - 8.4 [documentation](8.4/README.md)
+- 8.3 [documentation](8.3/README.md)
+- 8.2 [documentation](8.2/README.md)
+- 8.1 [documentation](8.1/README.md)
 
 ## Installation
 Install from the command line:
@@ -22,7 +25,7 @@ $ docker pull ghcr.io/optimode/php:TAG
 Tags can be: VERSION-PHP_SAPI
 where VERSION is the php version number and PHP_SAPI is the php mode. PHP_SAPI values can be: CLI, FPM, APACHE
 
-Example: 8.4-cli, 8.4-fpm, 8.4-apache
+Example: 8.4-cli, 8.4-fpm, 8.4-apache, 8.1-cli, 8.1-fpm, 8.1-apache,
 
 You can find the specific installation image name in the documentation for the specific version.
 
