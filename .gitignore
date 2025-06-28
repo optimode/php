@@ -1,6 +1,11 @@
 .history
 .vscode
 config
+php-src
 deploy-ghcr.sh
 update-config-dirs.sh
 list-installed-extensions.sh
+list-installed-versions.sh
+list-updatable-versions.sh
+update-versions.sh
+common.sh
