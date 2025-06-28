@@ -126,8 +126,17 @@ docker cp php84conf:/usr/local/etc <your_save_path>
 ```
 
 You can then modify the configuration as you wish.
-
 You can find the php.ini file here: <your_save_path>/etc/php/conf.d/xxx-optimode-default-php.ini
+
+To make your work easier, you can download it from here:
+
+- [8.4 configuration files](8.4/8.4-config.zip)
+- [8.3 configuration files](8.3/8.3-config.zip)
+- [8.2 configuration files](8.2/8.2-config.zip)
+- [8.1 configuration files](8.1/8.1-config.zip)
+- [8.0 configuration files](8.0/8.0-config.zip)
+- [7.4 configuration files](7.4/7.4-config.zip)
+- [7.3 configuration files](7.3/7.3-config.zip)
 
 
 ## List of installed extensions

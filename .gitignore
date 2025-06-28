@@ -2,3 +2,4 @@
 .vscode
 config
 deploy-ghcr.sh
+update-config-dirs.sh
