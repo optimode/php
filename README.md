@@ -3,7 +3,7 @@
 
 ## !!! Use at your own risk !!!
 
-Docker images built on top of the [official PHP images](https://hub.docker.com/r/_/php/) with the addition of some common and useful extensions, installed with [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer). 
+optimode/php container images built on top of the [official PHP images](https://hub.docker.com/r/_/php/) with the addition of some common and useful extensions, installed with [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer). 
 
 You may ask: what makes this image better/more useful?
 
@@ -66,6 +66,8 @@ Examples:
 ## Installation
 I am constantly building the images and uploading them to ghcr.io, so you can even install the images directly from there.
 
+[List of all container versions](pkgs/container/php/versions)
+
 Install from the command line:
 
 ```bash
@@ -108,7 +110,27 @@ services:
     tty: true
 ```
 
-## Extensions
+## Configuration
+Since the official php images are in the background, the setup methodology is the same. Basically, the images can be used without configuration.
+
+The cli is accessible simply with the php command, the fpm starts a pool on tcp port 9000.
+
+If you want to configure it yourself, the best thing to do is copy the entire configuration directory from the container and then mount it back from the docker host. 
+
+The path to the configuration directory in the container: /usr/local/etc
+
+```sh
+docker pull ghcr.io/optimode/php:8.4-fpm
+docker create --name php84conf optimode/php:8.4-fpm
+docker cp php84conf:/usr/local/etc <your_save_path>
+```
+
+You can then modify the configuration as you wish.
+
+You can find the php.ini file here: <your_save_path>/etc/php/conf.d/xxx-optimode-default-php.ini
+
+
+## List of installed extensions
 
 | Extension | 8.4 | 8.3 | 8.2 | 8.1 | 8.0 | 7.4 | 7.3 |
 |-----------| :--: |:--: |:--: |:--: |:--: |:--: |:--: |
