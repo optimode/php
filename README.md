@@ -130,13 +130,20 @@ You can find the php.ini file here: <your_save_path>/etc/php/conf.d/xxx-optimode
 
 To make your work easier, you can download it from here:
 
-- [8.4 configuration files](8.4/8.4-config.zip)
-- [8.3 configuration files](8.3/8.3-config.zip)
-- [8.2 configuration files](8.2/8.2-config.zip)
-- [8.1 configuration files](8.1/8.1-config.zip)
-- [8.0 configuration files](8.0/8.0-config.zip)
-- [7.4 configuration files](7.4/7.4-config.zip)
-- [7.3 configuration files](7.3/7.3-config.zip)
+- [8.4 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.4/8.4-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.4/8.4-config.zip`
+- [8.3 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.3/8.3-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.3/8.3-config.zip`
+- [8.2 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.2/8.2-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.2/8.2-config.zip`
+- [8.1 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.1/8.1-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.1/8.1-config.zip`
+- [8.0 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.0/8.0-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/8.0/8.0-config.zip`
+- [7.4 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/7.4/7.4-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/7.4/7.4-config.zip`
+- [7.3 configuration files](https://raw.githubusercontent.com/optimode/php/refs/heads/main/7.3/7.3-config.zip)  
+`curl https://raw.githubusercontent.com/optimode/php/refs/heads/main/7.3/7.3-config.zip`
 
 
 ## List of installed extensions

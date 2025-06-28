@@ -3,3 +3,4 @@
 config
 deploy-ghcr.sh
 update-config-dirs.sh
+list-installed-extensions.sh
