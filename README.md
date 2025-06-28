@@ -15,6 +15,7 @@ All available modules are installed in the cli, and fpm and apache add their own
 - 8.2 [documentation](8.2/README.md)
 - 8.1 [documentation](8.1/README.md)
 - 8.0 [documentation](8.0/README.md)
+- 7.4 [documentation](7.4/README.md)
 
 ## Installation
 Install from the command line:
